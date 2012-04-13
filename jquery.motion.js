@@ -35,6 +35,24 @@
 					clearInterval(clock);
 				};
 			}, settings.per_frame);
+		},
+
+		curve: function (length, duration) {
+			var _this = this, origin = {
+				x: _this.position().left,
+				y: _this.position().top,
+				}, x, y, x_v = length/duration,
+				t = 0, g = 3/(1000*1000);
+			
+			setInterval(function () {
+				t = settings.per_frame + t;
+				y = origin.y + g*t*t/2;
+				x = origin.x + x_v*t;
+				_this.css({
+					left: x,
+					top: y
+				});
+			}, settings.per_frame);
 		}
 	}
 
@@ -51,6 +69,14 @@
 		this.each(function () {
 			var $this = $(this);
 			methods.speed_change_liner.apply($this, args);
+		});
+	}
+
+	$.fn.curve = function (length, duration) {
+		var args = arguments;
+		this.each(function () {
+			var $this = $(this);
+			methods.curve.apply($this, args);
 		});
 	}
 	
